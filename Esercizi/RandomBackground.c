@@ -38,14 +38,14 @@ void keyboard(unsigned char key, int x, int y) {
 
 
 void display() {
-    glClear(GL_COLOR_BUFFER_BIT); // cancella il buffer di colore
+    glClear(GL_COLOR_BUFFER_BIT); // Pulisce il buffer di colore
     glutSwapBuffers(); // scambia il buffer di lavoro con quello visualizzato
 }
 
 
 int main(int argc, char** argv) {
     srand(time(NULL)); // inizializza il seme del generatore di numeri casuali
-    glutInit(&argc, argv); //
+    glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB); // imposta la modalità di visualizzazione
     glutInitWindowSize(windowWidth, windowHeight);
     glutCreateWindow("RandomBackgorund");

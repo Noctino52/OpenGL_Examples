@@ -21,9 +21,9 @@ int num_segments = 40;
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
+    glBegin(GL_TRIANGLE_FAN);
     //Solo il punto d'origine del cerchio deve essere rosso
     glColor3f(1.0, 0.0, 0.0);
-    glBegin(GL_TRIANGLE_FAN);
     glVertex2f(0.0, 0.0);
     //I restanti punti sono blu
     glColor3f(0.0, 0.0, 1.0);

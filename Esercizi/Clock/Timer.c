@@ -24,9 +24,8 @@ void display() {
     glLoadIdentity();
 
     // Disegna il quadrante del cronometro
-    glPushMatrix();
     //Lo ruoto per dargli un'effetto 3d
-    glRotatef(30, 1.0f, 1.0f, 0.0f); // ruota la lancetta dei minuti
+    glRotatef(30, 1.0f, 1.0f, 0.0f);
 
     glBegin(GL_QUADS);
     glColor3f(1.0f, 1.0f, 1.0f); // colore bianco
@@ -34,11 +33,9 @@ void display() {
     glVertex3f(-0.8f, -0.8f, 0.0f);
     glVertex3f(0.8f, -0.8f, 0.0f);
     glVertex3f(0.8f, 0.8f, 0.0f);
-    glPopMatrix();
     glEnd();
 
     //Punto d'origine
-    glPushMatrix();
     glBegin(GL_TRIANGLE_FAN);
     glColor3f(0.0f, 0.0f, 1.0f); // colore blu
     glVertex2f(0.0, 0.0);
@@ -51,7 +48,6 @@ void display() {
         glVertex2f(x, y);
     }
     glEnd();
-    glPopMatrix();
 
     glLineWidth(4.0f);
 

@@ -26,10 +26,6 @@ float windowHeight=480;
 void drawStar() {
     // Salva la matrice corrente nello stack della matrice e sposta, ruota e scala la matrice di trasformazione
     // per posizionare e orientare la stella.
-    glPushMatrix();
-    glTranslatef(starPositionX, starPositionY, 0.0f);
-    glRotatef(starRotation, 0.0f, 0.0f, 1.0f);
-    glScalef(starScale, starScale, 1.0f);
 
     // Inizia la definizione del poligono come un TRIANGLE_FAN.
     glBegin(GL_TRIANGLE_FAN);
@@ -49,15 +45,11 @@ void drawStar() {
             glVertex2f(innerRadius * sin(angle), innerRadius * cos(angle));
         }
     }
-
     glEnd();
-    // Ripristina la matrice di trasformazione originale.
-    glPopMatrix();
 }
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
-    glColor3f(1.0f, 1.0f, 1.0f);
     drawStar();
     glutSwapBuffers();
 }
