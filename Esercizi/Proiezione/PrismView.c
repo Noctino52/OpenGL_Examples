@@ -100,7 +100,7 @@ void display() {
     glLoadIdentity();
     //Inizia con valori (-1,1,-1,1,1,5), come richiesto
     //Default
-    glOrtho(-width, width, -height, height, depth, depth+4);
+    //glOrtho(-width, width, -height, height, depth, depth+4);
     //Frustum:
     //glFrustum(-width, width, -height, height, depth, depth+4);
     //Perspective:
