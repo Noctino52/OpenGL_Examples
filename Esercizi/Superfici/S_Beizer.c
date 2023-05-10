@@ -1,3 +1,9 @@
+/*Esercizio:
+Scrivere un programma (con OpenGL) per il rendering
+ di una superficie di Bezier razionale e non
+ di ordine (4,4) utilizzando le funzioni di OpenGL
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <GL/glu.h>
@@ -91,6 +97,10 @@ int main (int argc,char** argv)
     glutMainLoop();
 
 }
+//Nota:
+// Svantaggio Beizer Razionali:Se modifico un peso modifico tutta la curva
+//Beizer ottime se uniforme
+
 
 
 
