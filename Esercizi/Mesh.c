@@ -93,37 +93,41 @@ void LoadCordinate()
 
 
 
-Vertex Newell(int i)
+
+void Newell()
 {
-    Vertex result;
-    int k,somma=0,indice_attuale,indice_successivo;
-    for (k=0;k<casetta.face[i].numVert-1;k++)
+    // Calcola le normali delle facce
+    for (int i = 0; i < casetta.numFaces; i++)
     {
-        indice_attuale = casetta.face[i].matrice[k][0];
-        indice_successivo = casetta.face[i].matrice[(k+1)%casetta.face[i].numVert][0];
-        somma = somma + (( casetta.vertici[indice_attuale].y - casetta.vertici[indice_successivo].y)*(casetta.vertici[indice_attuale].z + casetta.vertici[indice_successivo].z) );
+        Face face = casetta.face[i];
+        Vertex* vertices = casetta.vertici;
+        Vertex normal;
+
+        for (int j = 0; j < face.numVert; j++)
+        {
+            int index1 = face.matrice[j][0];
+            int index2 = face.matrice[(j + 1) % face.numVert][0];
+
+            Vertex vertex1 = vertices[index1];
+            Vertex vertex2 = vertices[index2];
+
+            normal.x += (vertex1.y - vertex2.y) * (vertex1.z + vertex2.z);
+            normal.y += (vertex1.z - vertex2.z) * (vertex1.x + vertex2.x);
+            normal.z += (vertex1.x - vertex2.x) * (vertex1.y + vertex2.y);
+        }
+
+        // Normalizza la normale
+        /*
+        float length = sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
+        normal.x /= length;
+        normal.y /= length;
+        normal.z /= length;
+         */
+
+        // Salva la normale calcolata nella struttura Mesh
+        casetta.norm[i] = normal;
     }
-    result.x = somma ;
-    somma =0 ;
-    for (k=0;k<casetta.face[i].numVert-1;k++)
-    {
-        indice_attuale = casetta.face[i].matrice[k][0];
-        indice_successivo = casetta.face[i].matrice[(k+1)%casetta.face[i].numVert][0];
-        somma = somma + (( casetta.vertici[indice_attuale].z - casetta.vertici[indice_successivo].z)*(casetta.vertici[indice_attuale].x + casetta.vertici[indice_successivo].x) );
-    }
-    result.y=somma;
-    somma=0;
-    for (k=0;k<casetta.face[i].numVert-1;k++)
-    {
-        indice_attuale = casetta.face[i].matrice[k][0];
-        indice_successivo = casetta.face[i].matrice[(k+1)%casetta.face[i].numVert][0];
-        somma = somma + (( casetta.vertici[indice_attuale].x - casetta.vertici[indice_successivo].x)*(casetta.vertici[indice_attuale].y + casetta.vertici[indice_successivo].y) );
-    }
-    result.z=somma;
-    return result;
 }
-
-
 
 
 
@@ -184,12 +188,14 @@ void LoadMesh()
     casetta.face[6].matrice[2][0]=6;
     casetta.face[6].matrice[3][0]=1;
 
+    Newell();
     //calcolo coordinate normalizate per le facce
-    for (i=0;i<casetta.numNorms;i++)
+    /*for (i=0;i<casetta.numNorms;i++)
     {
         casetta.norm[i]= Newell(i);
+        //casetta.norm[i]= Newell(&casetta.vertici[i]);
     }
-
+     */
 }
 
 void drawFace(int i)
@@ -271,18 +277,28 @@ void keyboard(unsigned char key, int x, int y) {
 void redraw()
 {
 
-    glClearColor(0.0,0.3,0.0,0);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.0, 0.3, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-    glMatrixMode( GL_PROJECTION );
+
+    glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(left,right,bottom,top,nearclip,farclip);
-    glMatrixMode( GL_MODELVIEW );
-    //glEnable(GL_LIGHTING);
-    //glEnable(GL_LIGHT0);
-    //glShadeModel(GL_FLAT);
+    glOrtho(left, right, bottom, top, nearclip, farclip);
+
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(width,height,depth, 0,0,-1, 0,1,0);
+    gluLookAt(width, height, depth, 0, 0, 0, 0, 1, 0);
+    check_cap();
+
+    // Configurazione illuminazione
+    //GLfloat light_position[] = {0, 5, 0, 1}; // Posizione della luce
+    //GLfloat light_color[] = {2.0f, 2.0f, 2.0f, 1.0f}; // Colore della luce
+    //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_color);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
     glRotatef(90,0,0,1);
     int i;
     for(i=0;i<casetta.numFaces;i++)
@@ -348,3 +364,5 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+//corridoio con le luci (pareti+paviemnto con più quadrati)
